@@ -17,8 +17,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.doAsync
 import org.jsoup.Jsoup
 
-const val address = "https://dhlottery.co.kr/gameResult.do?method=byWin"
-lateinit var str: String
 var winningLotto: ArrayList<Int> = TODO()
 
 class MainActivity : AppCompatActivity() {
@@ -35,14 +33,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
-        val winningText = findViewById<TextView>(R.id.winningNumberText)
-        doAsync {
-            val doc = Jsoup.connect(address).get().select("meta")[2].attr("content")
-            str = str.split(". ")[0]
-            winningText.text = str
-        }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
