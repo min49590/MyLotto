@@ -1,5 +1,6 @@
 package com.example.mylotto.ui.dashboard
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,8 +12,10 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.mylotto.R
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 import com.example.mylotto.ui.home.str
+import java.io.File
 
 val myLotto = arrayOf(0,0,0,0,0,0)
+const val filename = "myfile"
 
 class DashboardFragment : Fragment() {
 
@@ -45,6 +48,15 @@ class DashboardFragment : Fragment() {
                 myLotto[4] = Integer.parseInt(editText5.text.toString())
                 myLotto[5] = Integer.parseInt(editText6.text.toString())
                 resultView.text = returnResult(answer(str), myLotto)
+            }
+        }
+
+        val saveBtn = root.findViewById<Button>(R.id.saveBtn)
+        saveBtn.setOnClickListener {
+            val file = File(root.context.filesDir, filename)
+            val fileContents = "Hello world!"
+            root.context.openFileOutput(filename, Context.MODE_PRIVATE).use {
+                it.write(fileContents.toByteArray())
             }
         }
 
