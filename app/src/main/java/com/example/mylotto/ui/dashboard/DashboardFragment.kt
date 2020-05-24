@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.fragment_dashboard.*
 import com.example.mylotto.ui.home.str
 import java.io.File
 
+
 val myLotto = arrayOf(0,0,0,0,0,0)
 const val filename = "myfile"
 
@@ -53,8 +54,16 @@ class DashboardFragment : Fragment() {
 
         val saveBtn = root.findViewById<Button>(R.id.saveBtn)
         saveBtn.setOnClickListener {
-            val file = File(root.context.filesDir, filename)
-            val fileContents = "Hello world!"
+            val file = File(context?.filesDir, filename)
+            val temp = file.readLines()
+            var no: Int
+            if (temp.isEmpty()) {
+                no = 1
+            }
+            else no = temp.size+1
+
+            val fileContents = "$no : ${editText1.text}, ${editText2.text}, ${editText3.text}," +
+                    "${editText4.text}, ${editText5.text}, ${editText6.text}. ${returnResult(answer(str), myLotto)}\n"
             root.context.openFileOutput(filename, Context.MODE_PRIVATE).use {
                 it.write(fileContents.toByteArray())
             }
@@ -97,4 +106,5 @@ class DashboardFragment : Fragment() {
 
         return message
     }
+
 }
