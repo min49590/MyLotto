@@ -16,7 +16,7 @@ import java.io.File
 
 
 val myLotto = arrayOf(0,0,0,0,0,0)
-const val filename = "myfile"
+const val filename = "myfile.txt"
 
 class DashboardFragment : Fragment() {
 
@@ -54,18 +54,23 @@ class DashboardFragment : Fragment() {
 
         val saveBtn = root.findViewById<Button>(R.id.saveBtn)
         saveBtn.setOnClickListener {
-            val file = File(context?.filesDir, filename)
-            val temp = file.readLines()
-            var no: Int
-            if (temp.isEmpty()) {
-                no = 1
-            }
-            else no = temp.size+1
+            val dir = File(context?.filesDir, filename)
+            if (!dir.exists()) dir.createNewFile()
 
-            val fileContents = "$no : ${editText1.text}, ${editText2.text}, ${editText3.text}," +
-                    "${editText4.text}, ${editText5.text}, ${editText6.text}. ${returnResult(answer(str), myLotto)}\n"
-            root.context.openFileOutput(filename, Context.MODE_PRIVATE).use {
-                it.write(fileContents.toByteArray())
+            resultView.text = dir.toPath().toString()
+            if (dir.canWrite()){
+                val temp = dir.readLines()
+                var no: Int
+                if (temp.isEmpty()) {
+                    no = 1
+                }
+                else no = temp.size+1
+
+                val fileContents = "$no : ${editText1.text}, ${editText2.text}, ${editText3.text}," +
+                        "${editText4.text}, ${editText5.text}, ${editText6.text}. ${returnResult(answer(str), myLotto)}\n"
+                root.context.openFileOutput(filename, Context.MODE_PRIVATE).use {
+                    it.write(fileContents.toByteArray())
+                }
             }
         }
 

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -31,26 +32,31 @@ class NotificationsFragment : Fragment() {
 
         val importBtn = root.findViewById<Button>(R.id.importBtn)
         importBtn.setOnClickListener {
-            readFile()
+            readFile(root)
         }
 
         return root
     }
-    private fun readFile() {
-        val file = File(context?.filesDir, filename)
-        val temp = file.readLines()
+    private fun readFile(root: View) {
+        val dir = File(context?.filesDir, filename)
+        if (!dir.exists()) dir.createNewFile()
 
-        if (temp.isEmpty()) {
-            val textView = TextView(context)
+        var scrollLayout = root.findViewById<ScrollView>(R.id.scrollView)
+        if (!dir.canRead()) {
+            var textView = TextView(context)
             textView.text = "읽어올 데이터가 없습니다."
-            scrollView.addView(textView, 0)
+            scrollLayout.addView(textView, 0)
         }
         else {
-            for (index in temp.indices) {
-                val textView = TextView(context)
-                textView.text = "$index : ${temp[index]}"
-                scrollView.addView(textView, 0)
-            }
+            var temp = dir.readText()
+            var textView = TextView(context)
+            textView.text = temp
+            scrollLayout.addView(textView, 0)
+//            for (index in temp.indices) {
+//                val textView = TextView(context)
+//                textView.text = "$index : ${temp[index]}"
+//                scrollView.addView(textView, 0)
+//            }
         }
     }
     private fun File.readLines(): List<String> {
