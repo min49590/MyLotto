@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.example.mylotto.R
 import com.example.mylotto.ui.dashboard.filename
-import kotlinx.android.synthetic.main.fragment_notifications.*
+import kotlinx.android.synthetic.main.fragment_notifications.view.*
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileInputStream
@@ -35,29 +36,40 @@ class NotificationsFragment : Fragment() {
             readFile(root)
         }
 
+        val resetBtn = root.findViewById<Button>(R.id.resetBtn)
+        resetBtn.setOnClickListener {
+            resetView(root)
+        }
+
         return root
     }
     private fun readFile(root: View) {
         val dir = File(context?.filesDir, filename)
         if (!dir.exists()) dir.createNewFile()
 
-        var scrollLayout = root.findViewById<ScrollView>(R.id.scrollView)
+        var recordView = root.findViewById<ScrollView>(R.id.recordView)
         if (!dir.canRead()) {
             var textView = TextView(context)
             textView.text = "읽어올 데이터가 없습니다."
-            scrollLayout.addView(textView, 0)
+            recordView.addView(textView, 0)
         }
         else {
-            var temp = dir.readText()
+            var temp:String = "atemk" // dir.readText()
             var textView = TextView(context)
             textView.text = temp
-            scrollLayout.addView(textView, 0)
+            recordView.addView(textView, 0)
 //            for (index in temp.indices) {
 //                val textView = TextView(context)
 //                textView.text = "$index : ${temp[index]}"
 //                scrollView.addView(textView, 0)
 //            }
         }
+    }
+    private fun resetView(root: View) {
+        var recordView = root.findViewById<ScrollView>(R.id.recordView)
+        var a = recordView[0]
+
+
     }
     private fun File.readLines(): List<String> {
         val result = ArrayList<String>()

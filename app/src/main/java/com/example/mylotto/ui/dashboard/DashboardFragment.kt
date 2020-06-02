@@ -66,7 +66,7 @@ class DashboardFragment : Fragment() {
                 }
                 else no = temp.size+1
 
-                val fileContents = "$no : ${editText1.text}, ${editText2.text}, ${editText3.text}," +
+                val fileContents = "$no : ${editText1.text}, ${editText2.text}, ${editText3.text}, " +
                         "${editText4.text}, ${editText5.text}, ${editText6.text}. ${returnResult(answer(str), myLotto)}\n"
                 root.context.openFileOutput(filename, Context.MODE_PRIVATE).use {
                     it.write(fileContents.toByteArray())
